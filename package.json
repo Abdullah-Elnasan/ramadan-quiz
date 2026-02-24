@@ -1,0 +1,32 @@
+{
+  "name": "ramadan-quiz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.90",
+    "@iconify-json/simple-icons": "^1.2.70",
+    "@nuxt/ui": "^4.4.0",
+    "@nuxtjs/google-fonts": "3.2.0",
+    "@nuxtjs/seo": "3.4.0",
+    "h3": "2.0.1-rc.14",
+    "nuxt": "^4.3.1",
+    "tailwindcss": "^4.1.18",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260303.0",
+    "@nuxt/eslint": "^1.15.1",
+    "@types/uuid": "^11.0.0",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.4",
+    "wrangler": "^4.68.0"
+  },
+  "packageManager": "pnpm@10.29.3"
+}

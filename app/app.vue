@@ -1,0 +1,14 @@
+<template>
+  <UApp>
+    <NuxtPage />
+  </UApp>
+</template>
+
+<!-- ✅ استيراد خط عربي -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
+* {
+  font-family: 'Tajawal', sans-serif;
+}
+</style>

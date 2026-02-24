@@ -1,0 +1,12 @@
+name = "ramadan-quiz"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = ".output/pages"
+
+[[kv_namespaces]]
+binding = "QUIZ_KV"
+id = "0eb4701ae1374a6cbb542b3442e2bcec"
+preview_id = "53463c780af74d3897803b7aaa268bb5"
+
+[vars]
+ADMIN_USER = "admin"
+# ADMIN_PASS يُضاف كـ Secret عبر Dashboard وليس هنا
