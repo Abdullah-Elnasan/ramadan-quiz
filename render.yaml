@@ -8,19 +8,10 @@ services:
     startCommand: node .output/server/index.mjs
     envVars:
       - key: REDIS_URL
-        fromService:
-          type: redis
-          name: ramadan-quiz-redis
-          property: connectionString
+        value: redis://red-d6etf4cr85hc73fomi30:OeQMYnup7D4Ftl4MJ1cKnFw2FQq3jBLZ@red-d6etf4cr85hc73fomi30:6379 # ← الصق رابط Redis الموجود هنا
       - key: ADMIN_USER
         value: admin
       - key: ADMIN_PASS
         generateValue: true
       - key: NODE_ENV
         value: production
-
-  - type: redis
-    name: ramadan-quiz-redis
-    region: frankfurt
-    plan: free
-    ipAllowList: []
