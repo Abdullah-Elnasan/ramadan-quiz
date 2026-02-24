@@ -12,8 +12,14 @@
     <div class="relative z-10 w-full max-w-lg">
       <div class="text-center mb-5">
         <div class="flex justify-center">
-          <div class="flex flex-col items-center ">
-            <img src="/dev-2.png" alt="Logo" class="w-55 h-55 mb-2" />
+          <div class="flex flex-col items-center">
+            <img
+              src="/dev-2.png"
+              alt="شعار الجوهرة سمارت"
+              class="w-55 h-55 mb-2"
+              loading="eager"
+              fetchpriority="high"
+            />
             <div class="text-center">
               <p class="text-sm font-semibold tracking-widest uppercase" style="color: #5b7fcf;">
                 Aljawhra Smart
@@ -49,19 +55,19 @@
           <p class="text-base leading-loose" style="color: rgba(255,255,255,0.75);">
             يُتاح سؤال واحد يومياً خلال نافذة زمنية محددة.<br>
             مدة الإجابة
-            <span class="font-bold" style="color: #5b7fcf;">أقل من 60 ثانية </span>
+            <span class="font-bold" style="color: #5b7fcf;">أقل من 60 ثانية</span>
             تبدأ فور دخولك.
           </p>
           <p class="text-base leading-loose" style="color: rgba(255,255,255,0.75);">
-           عندما  <span class="font-bold" style="color: #5b7fcf;">مغادرة </span> صفحة السؤال لن تستطيع الإجابة بعدها.
+            عند <span class="font-bold" style="color: #5b7fcf;">مغادرة</span> صفحة السؤال لن تستطيع الإجابة بعدها.
           </p>
         </div>
 
         <button
           class="w-full font-bold text-base py-4 rounded transition-all duration-200 tracking-widest text-white"
           style="background: #305099;"
-          @mouseenter="e => (e.target as HTMLElement).style.background = '#3d63bf'"
-          @mouseleave="e => (e.target as HTMLElement).style.background = '#305099'"
+          @mouseenter="(e: MouseEvent) => ((e.target as HTMLElement).style.background = '#3d63bf')"
+          @mouseleave="(e: MouseEvent) => ((e.target as HTMLElement).style.background = '#305099')"
           @click="navigateTo('/join')"
         >
           دخول للإجابة عن سؤال اليوم
@@ -76,6 +82,31 @@
 </template>
 
 <script setup lang="ts">
+// ── OG tags للصفحة الرئيسية — يُدمج في HTML عند prerender ─────────────────
+useSeoMeta({
+  title:              'مسابقة الجوهرة سمارت اليومية',
+  description:        'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك',
+  ogTitle:            'مسابقة الجوهرة سمارت اليومية',
+  ogDescription:      'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك',
+  ogImage:            'https://ramadan-quiz-cs0.pages.dev/og-image.png',
+  ogImageWidth:       '1200',
+  ogImageHeight:      '630',
+  ogType:             'website',
+  ogUrl:              'https://ramadan-quiz-cs0.pages.dev',
+  twitterCard:        'summary_large_image',
+  twitterImage:       'https://ramadan-quiz-cs0.pages.dev/og-image.png',
+  twitterTitle:       'مسابقة الجوهرة سمارت اليومية',
+  twitterDescription: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك',
+})
+
+// ── preload الصورة الرئيسية لتحسين LCP ────────────────────────────────────
+useHead({
+  link: [
+    { rel: 'preload', as: 'image', href: '/dev-2.png' },
+    { rel: 'preconnect', href: 'https://ramadan-quiz-cs0.pages.dev' }
+  ]
+})
+
 const year = new Date().getFullYear()
 const todayFormatted = computed(() =>
   new Date().toLocaleDateString('ar-SA', {
