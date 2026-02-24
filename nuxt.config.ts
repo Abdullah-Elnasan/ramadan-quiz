@@ -17,11 +17,18 @@ export default defineNuxtConfig({
     public: {}
   },
 
+
+  routeRules: {
+    '/': { prerender: true }   // ✅ يجعل الصفحة الرئيسية static
+  },
+
+
   fonts: {
     providers: {
       fontshare: false
     }
   },
+
 
   app: {
     head: {
@@ -30,22 +37,16 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-
-        // ── Open Graph ──────────────────────────────────────────
         { property: 'og:title',        content: 'مسابقة الجوهرة سمارت اليومية' },
-        { property: 'og:description',  content: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك' },
-        { property: 'og:image',        content: 'https://nonostensive-beauish-staci.ngrok-free.dev/og-image.png' },
+        { property: 'og:description',  content: 'شارك في مسابقة الجوهرة رمضان اليومية واختبر معلوماتك' },
+        { property: 'og:image',        content: 'https://ramadan-quiz-cs0.pages.dev/og-image.png' },
         { property: 'og:image:width',  content: '1200' },
         { property: 'og:image:height', content: '630' },
+        { property: 'og:image:type',   content: 'image/png' },
         { property: 'og:type',         content: 'website' },
-        { property: 'og:url',          content: 'https://nonostensive-beauish-staci.ngrok-free.dev' },
-        { property: 'og:locale',       content: 'ar_SA' },
-
-        // ── Twitter/X ────────────────────────────────────────────
+        { property: 'og:url',          content: 'https://ramadan-quiz-cs0.pages.dev' },
         { name: 'twitter:card',        content: 'summary_large_image' },
-        { name: 'twitter:title',       content: 'مسابقة الجوهرة سمارت اليومية' },
-        { name: 'twitter:description', content: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك' },
-        { name: 'twitter:image',       content: 'https://nonostensive-beauish-staci.ngrok-free.dev/og-image.png' },
+        { name: 'twitter:image',       content: 'https://ramadan-quiz-cs0.pages.dev/og-image.png' },
       ]
     }
   }
