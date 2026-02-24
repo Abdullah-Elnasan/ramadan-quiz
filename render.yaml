@@ -19,9 +19,8 @@ services:
       - key: NODE_ENV
         value: production
 
-databases:
   - type: redis
     name: ramadan-quiz-redis
     region: frankfurt
     plan: free
-    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
