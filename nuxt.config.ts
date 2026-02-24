@@ -1,13 +1,25 @@
 export default defineNuxtConfig({
+  ssr: true,
+
   devtools: { enabled: false },
+
   modules: ['@nuxt/ui'],
 
   css: ['~/assets/css/main.css'],
 
+  // nitro: {
+  //   preset: 'cloudflare-pages',
+  //   storage: {
+  //     kv: { driver: 'memory' }
+  //   }
+  // },
+
   nitro: {
-    preset: 'cloudflare-pages',
     storage: {
-      kv: { driver: 'memory' }
+      kv: {
+        driver: 'redis',
+        url: process.env.REDIS_URL
+      }
     }
   },
 
@@ -17,38 +29,41 @@ export default defineNuxtConfig({
     public: {}
   },
 
-  fonts: {
-    providers: {
-      fontshare: false
-    }
-  },
-
   app: {
     head: {
       title: 'مسابقة الجوهرة سمارت اليومية',
       htmlAttrs: { lang: 'ar', dir: 'rtl' },
-     meta: [
-  { charset: 'utf-8' },
-  { name: 'viewport', content: 'width=device-width, initial-scale=1' },
 
-  // مهم جداً
-  { name: 'description', content: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك واربح جوائز مميزة' },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
 
-  { property: 'og:title', content: 'مسابقة الجوهرة سمارت اليومية' },
-  { property: 'og:description', content: 'شارك الآن في المسابقة اليومية واختبر معلوماتك' },
-  { property: 'og:image', content: 'https://ramadan-quiz-cs0.pages.dev/og-image.png' },
-  { property: 'og:image:secure_url', content: 'https://ramadan-quiz-cs0.pages.dev/og-image.png' },
-  { property: 'og:image:width', content: '1200' },
-  { property: 'og:image:height', content: '630' },
-  { property: 'og:type', content: 'website' },
-  { property: 'og:url', content: 'https://ramadan-quiz-cs0.pages.dev/' },
-  { property: 'og:site_name', content: 'الجوهرة سمارت' },
+        // مهم جداً لواتساب
+        { name: 'description', content: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك واربح جوائز مميزة كل يوم' },
 
-  { name: 'twitter:card', content: 'summary_large_image' },
-  { name: 'twitter:title', content: 'مسابقة الجوهرة سمارت اليومية' },
-  { name: 'twitter:description', content: 'شارك الآن في المسابقة اليومية واختبر معلوماتك' },
-  { name: 'twitter:image', content: 'https://ramadan-quiz-cs0.pages.dev/og-image.png' },
-]
+        // Open Graph
+        { property: 'og:title', content: 'مسابقة الجوهرة سمارت اليومية' },
+        { property: 'og:description', content: 'اختبر معلوماتك يومياً في مسابقة الجوهرة سمارت واربح جوائز مميزة' },
+        { property: 'og:image', content: 'https://ramadan-quiz-cs0.pages.dev/og-image-2.png' },
+        { property: 'og:image:secure_url', content: 'https://ramadan-quiz-cs0.pages.dev/og-image-2.png' },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:type', content: 'image/png' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://ramadan-quiz-cs0.pages.dev/' },
+        { property: 'og:site_name', content: 'الجوهرة سمارت' },
+        { property: 'og:locale', content: 'ar_SA' },
+
+        // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'مسابقة الجوهرة سمارت اليومية' },
+        { name: 'twitter:description', content: 'اختبر معلوماتك يومياً وشارك في المسابقة' },
+        { name: 'twitter:image', content: 'https://ramadan-quiz-cs0.pages.dev/og-image-2.png' },
+      ],
+
+      link: [
+        { rel: 'canonical', href: 'https://ramadan-quiz-cs0.pages.dev/' }
+      ]
     }
   }
 })

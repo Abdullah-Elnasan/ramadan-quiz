@@ -1,5 +1,7 @@
 // ✅ استيراد النوع الصحيح من nitro/h3
 import type { H3Event } from 'h3'
+import { RedisStorageAdapter } from '../storage/redis' // المسار حسب مشروعك
+
 // ✅ تعريف النوع يدوياً بدون استيراد خارجي
 type StorageValue = string | number | boolean | object | null
 
@@ -56,9 +58,19 @@ interface CloudflareEnv {
 
 // ── Factory ───────────────────────────────────────────────────────────────────
 // ✅ استخدام H3Event المستورد بدلاً من ReturnType<typeof defineEventHandler>
+// export function getStorage(event?: H3Event): StorageAdapter {
+//   const cfEnv = (event?.context?.cloudflare?.env as CloudflareEnv | undefined)
+//   if (cfEnv?.QUIZ_KV) return new CloudflareKVAdapter(cfEnv.QUIZ_KV)
+//   return new NitroStorageAdapter()
+// }
+
 export function getStorage(event?: H3Event): StorageAdapter {
-  const cfEnv = (event?.context?.cloudflare?.env as CloudflareEnv | undefined)
-  if (cfEnv?.QUIZ_KV) return new CloudflareKVAdapter(cfEnv.QUIZ_KV)
+  const redisUrl = process.env.REDIS_URL
+  if (redisUrl) {
+    return new RedisStorageAdapter(redisUrl)
+  }
+
+  // fallback للتخزين المحلي
   return new NitroStorageAdapter()
 }
 

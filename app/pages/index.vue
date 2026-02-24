@@ -82,30 +82,15 @@
 </template>
 
 <script setup lang="ts">
-// ── OG tags للصفحة الرئيسية — يُدمج في HTML عند prerender ─────────────────
-useSeoMeta({
-  title:              'مسابقة الجوهرة سمارت اليومية',
-  description:        'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك',
-  ogTitle:            'مسابقة الجوهرة سمارت اليومية',
-  ogDescription:      'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك',
-  ogImage:            'https://ramadan-quiz-cs0.pages.dev/og-image.png',
-  ogImageWidth:       '1200',
-  ogImageHeight:      '630',
-  ogType:             'website',
-  ogUrl:              'https://ramadan-quiz-cs0.pages.dev',
-  twitterCard:        'summary_large_image',
-  twitterImage:       'https://ramadan-quiz-cs0.pages.dev/og-image.png',
-  twitterTitle:       'مسابقة الجوهرة سمارت اليومية',
-  twitterDescription: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك',
-})
 
-// ── preload الصورة الرئيسية لتحسين LCP ────────────────────────────────────
-useHead({
-  link: [
-    { rel: 'preload', as: 'image', href: '/dev-2.png' },
-    { rel: 'preconnect', href: 'https://ramadan-quiz-cs0.pages.dev' }
-  ]
-})
+
+// // ── preload الصورة الرئيسية لتحسين LCP ────────────────────────────────────
+// useHead({
+//   link: [
+//     { rel: 'preload', as: 'image', href: '/dev-2.png' },
+//     { rel: 'preconnect', href: 'https://ramadan-quiz-cs0.pages.dev' }
+//   ]
+// })
 
 const year = new Date().getFullYear()
 const todayFormatted = computed(() =>
