@@ -17,18 +17,11 @@ export default defineNuxtConfig({
     public: {}
   },
 
-
-  routeRules: {
-    '/': { prerender: true }   // ✅ يجعل الصفحة الرئيسية static
-  },
-
-
   fonts: {
     providers: {
       fontshare: false
     }
   },
-
 
   app: {
     head: {
@@ -38,7 +31,7 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { property: 'og:title',        content: 'مسابقة الجوهرة سمارت اليومية' },
-        { property: 'og:description',  content: 'شارك في مسابقة الجوهرة رمضان اليومية واختبر معلوماتك' },
+        { property: 'og:description',  content: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك' },
         { property: 'og:image',        content: 'https://ramadan-quiz-cs0.pages.dev/og-image.png' },
         { property: 'og:image:width',  content: '1200' },
         { property: 'og:image:height', content: '630' },
