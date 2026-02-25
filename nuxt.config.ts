@@ -35,15 +35,15 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { property: 'og:title',        content: 'مسابقة الجوهرة سمارت اليومية' },
-        { property: 'og:description',  content: 'شارك في مسابقة الجوهرة سمارت اليومية واختبر معلوماتك' },
-        { property: 'og:image',        content: 'https://your-app.onrender.com/og-image.png' },
+        { property: 'og:title',        content: 'مسابقة رمضان اليومية - الجوهرة سمارت' },
+        { property: 'og:description',  content: "مسابقة رمضان اليومية -  الجوهرة سمارت اليومية، المصممة لتعزيز ثقافتكم العامة واختبار معارفكم في بيئة مهنية محفّزة." },
+        { property: 'og:image',        content: 'https://ramadan-quiz-lv9o.onrender.com/og-image-2.png' },
         { property: 'og:image:width',  content: '1200' },
         { property: 'og:image:height', content: '630' },
         { property: 'og:type',         content: 'website' },
-        { property: 'og:url',          content: 'https://your-app.onrender.com' },
+        { property: 'og:url',          content: 'https://ramadan-quiz-lv9o.onrender.com' },
         { name: 'twitter:card',        content: 'summary_large_image' },
-        { name: 'twitter:image',       content: 'https://your-app.onrender.com/og-image.png' },
+        { name: 'twitter:image',       content: 'https://ramadan-quiz-lv9o.onrender.com/og-image-2.png' },
       ]
     }
   }
