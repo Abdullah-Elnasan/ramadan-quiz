@@ -30,7 +30,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'مسابقة الجوهرة سمارت اليومية',
+      title: 'مسابقة رمضان اليومية - الجوهرة سمارت',
       htmlAttrs: { lang: 'ar', dir: 'rtl' },
       meta: [
         { charset: 'utf-8' },
