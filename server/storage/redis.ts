@@ -1,27 +1,44 @@
 // ~/server/storage/redis.ts
-import Redis from 'ioredis'
-import type { StorageAdapter } from '../types/storage' // المسار حسب مشروعك
+import Redis, { type Redis as RedisClient } from 'ioredis'
+import type { StorageAdapter } from '../types/storage'
 
 export class RedisStorageAdapter implements StorageAdapter {
-  private client: Redis
+  private client: RedisClient | null = null
+  private readonly redisUrl: string
 
   constructor(redisUrl: string) {
-    this.client = new Redis(redisUrl)
+    this.redisUrl = redisUrl
   }
 
-  // حفظ قيمة
+  private getClient() {
+    if (!this.client) {
+      this.client = new Redis(this.redisUrl, {
+        maxRetriesPerRequest: 3,
+        retryStrategy(times) {
+          if (times > 3) return null
+          return Math.min(times * 200, 2000)
+        }
+      })
+      this.client.on('error', (err) => {
+        console.error('Redis error:', err.message)
+      })
+    }
+    return this.client
+  }
+
   async set(key: string, value: any, ttlSeconds?: number) {
+    const client = this.getClient()
     const data = JSON.stringify(value)
     if (ttlSeconds) {
-      await this.client.set(key, data, 'EX', ttlSeconds)
+      await client.set(key, data, 'EX', ttlSeconds)
     } else {
-      await this.client.set(key, data)
+      await client.set(key, data)
     }
   }
 
-  // استرجاع قيمة
   async get<T = any>(key: string): Promise<T | null> {
-    const data = await this.client.get(key)
+    const client = this.getClient()
+    const data = await client.get(key)
     if (!data) return null
     try {
       return JSON.parse(data) as T
@@ -31,14 +48,14 @@ export class RedisStorageAdapter implements StorageAdapter {
     }
   }
 
-  // حذف قيمة (مطابق لواجهة StorageAdapter)
   async del(key: string) {
-    await this.client.del(key)
+    const client = this.getClient()
+    await client.del(key)
   }
 
-  // تحقق إذا المفتاح موجود
   async has(key: string): Promise<boolean> {
-    const exists = await this.client.exists(key)
+    const client = this.getClient()
+    const exists = await client.exists(key)
     return exists > 0
   }
 }
