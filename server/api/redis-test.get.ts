@@ -4,4 +4,6 @@ import { redis } from '../utils/redis'  // عدّل المسار حسب مشرو
 export default defineEventHandler(async () => {
   const value = await redis.ping()
   return { ok: true, value }
+
+  
 })
