@@ -14,7 +14,7 @@
         <div class="flex justify-center">
           <div class="flex flex-col items-center">
             <img
-              src="/dev-2.png"
+              src="/logo-me.png"
               alt="شعار الجوهرة سمارت"
               class="w-55 h-55 mb-2"
               loading="eager"
