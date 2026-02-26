@@ -1,29 +1,33 @@
-// server/api/join.post.ts
 import { defineEventHandler, readBody, setCookie, createError } from 'h3'
 import { getStorage, keys } from '../utils/storage'
 import { v4 as uuidv4 } from 'uuid'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<{ name: string; uk?: string }>(event)
+  const body = await readBody<{ phone: string; uk?: string }>(event)
 
-  if (!body?.name?.trim()) {
-    throw createError({ statusCode: 400, message: 'الاسم مطلوب' })
+  const phone = body?.phone?.trim().replace(/\s+/g, '')
+
+  if (!phone) {
+    throw createError({ statusCode: 400, message: 'رقم الهاتف مطلوب' })
   }
 
-  // ✅ إذا لم يُرسل uk، ولّد واحداً جديداً
-  const uk = body.uk || uuidv4()
+  // تحقق من الصيغة — أرقام فقط، 7 إلى 15 خانة
+  if (!/^\+?\d{7,15}$/.test(phone)) {
+    throw createError({ statusCode: 400, message: 'رقم الهاتف غير صالح' })
+  }
 
+  const uk = body.uk || uuidv4()
   const storage = getStorage()
   const participantKey = keys.participant(uk)
   const existing = await storage.get<any>(participantKey)
 
   if (existing) {
     setCookie(event, 'userKey', uk, { httpOnly: true, path: '/' })
-    return { ok: true, name: existing.name }
+    return { ok: true, name: existing.phone }
   }
 
-  await storage.set(participantKey, { name: body.name.trim() })
+  await storage.set(participantKey, { phone })
   setCookie(event, 'userKey', uk, { httpOnly: true, path: '/' })
 
-  return { ok: true, name: body.name.trim() }
+  return { ok: true, name: phone }
 })

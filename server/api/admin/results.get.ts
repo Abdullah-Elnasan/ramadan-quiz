@@ -17,16 +17,16 @@ export default defineEventHandler(async (event) => {
 
   const attempts: any[] = []
   for (const uk of userKeys) {
-    const attempt     = await storage.get<any>(keys.attempt(date, uk))
+    const attempt = await storage.get<any>(keys.attempt(date, uk))
     const participant = await storage.get<any>(keys.participant(uk))
     if (!attempt) continue
 
-    const selectedId   = attempt.selectedOptionId
+    const selectedId = attempt.selectedOptionId
     const selectedText = question.options.find((o: any) => o.id === selectedId)?.text ?? '—'
-    const isCorrect    = selectedId === correctOptionId
+    const isCorrect = selectedId === correctOptionId
 
     attempts.push({
-      name: participant?.name ?? 'مجهول',
+      name: participant?.phone ?? participant?.name ?? 'مجهول',
       selectedOptionId: selectedId,
       selectedOptionText: selectedText,
       isCorrect,
@@ -38,12 +38,12 @@ export default defineEventHandler(async (event) => {
 
   attempts.sort((a, b) => Number(b.isCorrect) - Number(a.isCorrect))
 
-  const total   = attempts.length
+  const total = attempts.length
   const correct = attempts.filter(a => a.isCorrect).length
   const optionStats = question.options.map((o: any) => ({
-    id:        o.id,
-    text:      o.text,
-    count:     attempts.filter(a => a.selectedOptionId === o.id).length,
+    id: o.id,
+    text: o.text,
+    count: attempts.filter(a => a.selectedOptionId === o.id).length,
     isCorrect: o.id === correctOptionId
   }))
 

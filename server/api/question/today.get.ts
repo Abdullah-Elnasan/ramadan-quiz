@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   if (!userKey) return { needJoin: true }
 
   const storage = getStorage(event)
-  const participant = await storage.get<{ name: string }>(keys.participant(userKey))
+  const participant = await storage.get<{ name?: string; phone?: string }>(keys.participant(userKey))
   if (!participant) return { needJoin: true }
 
   const today = todayKey()
@@ -74,6 +74,6 @@ export default defineEventHandler(async (event) => {
     alreadySubmitted: !!alreadyAttempt,
     abandoned: !!abandonData,          // ✅ جديد
     closeAt: raw.closeAt,
-    participantName: participant.name
+    participantName: participant.phone
   }
 })

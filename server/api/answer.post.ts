@@ -6,7 +6,8 @@ export default defineEventHandler(async (event) => {
   if (!userKey) return { accepted: false, reason: 'needJoin' }
 
   const storage = getStorage(event)
-  const participant = await storage.get<{ name: string }>(keys.participant(userKey))
+  const participant = await storage.get<{ name?: string; phone?: string }>(keys.participant(userKey))
+
   if (!participant) return { accepted: false, reason: 'needJoin' }
 
   const body = await readBody<{ questionId?: string; selectedOptionId?: string }>(event)

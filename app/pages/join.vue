@@ -5,7 +5,6 @@
   >
     <div class="w-full max-w-sm">
 
-      <!-- الرأس -->
       <div class="text-center mb-8">
         <div class="flex justify-center mb-4">
           <img
@@ -15,43 +14,35 @@
             loading="eager"
           />
         </div>
-
-        <!-- فاصل ذهبي -->
         <div class="flex items-center gap-3 mb-5">
           <div class="flex-1 h-px" style="background: rgba(220,206,0,0.4);" />
           <span style="color: rgba(180,168,0,0.6);">◆</span>
           <div class="flex-1 h-px" style="background: rgba(220,206,0,0.4);" />
         </div>
-
         <h2 class="text-xl font-bold" style="color: #1a1a1a;">تسجيل الدخول</h2>
-        <p class="text-sm mt-1" style="color: #9a9a9a;">أدخل اسمك للمشاركة</p>
+        <p class="text-sm mt-1" style="color: #9a9a9a;">أدخل رقم هاتفك للمشاركة</p>
       </div>
 
-      <!-- البطاقة -->
       <div
         class="rounded-xl p-7"
         style="
           background: #FFFFFF;
           border: 1px solid rgba(220,206,0,0.45);
-          box-shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(220,206,0,0.1);
+          box-shadow: 0 4px 24px rgba(0,0,0,0.07);
         "
       >
         <form @submit.prevent="submit">
-
-          <!-- حقل الاسم -->
           <div class="mb-6">
-            <label
-              class="block text-xs tracking-widest uppercase mb-2"
-              style="color: #6b6b6b;"
-            >
-              الاسم الكامل
+            <label class="block text-xs tracking-widest uppercase mb-2" style="color: #6b6b6b;">
+              رقم الهاتف
             </label>
             <input
-              v-model="name"
-              type="text"
-              placeholder="أدخل اسمك الكريم"
-              maxlength="30"
-              class="w-full rounded-lg px-4 py-3 text-right text-sm focus:outline-none transition-all duration-200"
+              v-model="phone"
+              type="tel"
+              placeholder="09XXXXXXXX"
+              maxlength="15"
+              dir="ltr"
+              class="w-full rounded-lg px-4 py-3 text-left text-sm focus:outline-none transition-all duration-200 tracking-widest"
               style="
                 background: #F9F6EE;
                 border: 1px solid rgba(220,206,0,0.35);
@@ -62,7 +53,6 @@
               @blur="(e: FocusEvent) => ((e.target as HTMLElement).style.borderColor = 'rgba(220,206,0,0.35)')"
             />
 
-            <!-- رسالة الخطأ -->
             <div
               v-if="error"
               class="flex items-center gap-1.5 mt-2 px-3 py-2 rounded-lg"
@@ -72,21 +62,19 @@
             </div>
           </div>
 
-          <!-- فاصل -->
           <div class="h-px mb-5" style="background: rgba(220,206,0,0.2);" />
 
-          <!-- زر الدخول -->
           <button
             type="submit"
-            :disabled="!name.trim() || loading"
+            :disabled="!phone.trim() || loading"
             class="w-full font-bold py-3.5 rounded-lg transition-all duration-200 tracking-widest text-sm"
             style="background: #1a1a1a; color: #F5F0E8;"
             :style="{
-              opacity: (!name.trim() || loading) ? '0.4' : '1',
-              cursor: (!name.trim() || loading) ? 'not-allowed' : 'pointer'
+              opacity: (!phone.trim() || loading) ? '0.4' : '1',
+              cursor: (!phone.trim() || loading) ? 'not-allowed' : 'pointer'
             }"
             @mouseenter="(e: MouseEvent) => {
-              if (name.trim() && !loading) {
+              if (phone.trim() && !loading) {
                 const el = e.target as HTMLElement
                 el.style.background = 'rgb(220,206,0)'
                 el.style.color = '#1a1a1a'
@@ -104,7 +92,6 @@
         </form>
       </div>
 
-      <!-- الفوتر -->
       <p class="text-center text-xs mt-6 tracking-wider" style="color: #9a9a9a;">
         © {{ new Date().getFullYear() }} شركة الميثاق — جميع الحقوق محفوظة
       </p>
@@ -113,18 +100,28 @@
 </template>
 
 <script setup lang="ts">
-const name = ref('')
+const phone = ref('')
 const error = ref('')
 const loading = ref(false)
 
+function validatePhone(val: string): string {
+  const cleaned = val.trim().replace(/\s+/g, '')
+  if (!cleaned) return 'رقم الهاتف مطلوب'
+  if (!/^\+?\d{7,15}$/.test(cleaned)) return 'أدخل رقماً صحيحاً (أرقام فقط، 7-15 خانة)'
+  return ''
+}
+
 async function submit() {
   error.value = ''
-  const trimmed = name.value.trim()
-  if (trimmed.length < 2) { error.value = 'الاسم قصير جداً (2 أحرف على الأقل)'; return }
-  if (trimmed.length > 30) { error.value = 'الاسم طويل جداً (30 حرفاً كحد أقصى)'; return }
+  const validationError = validatePhone(phone.value)
+  if (validationError) { error.value = validationError; return }
+
   loading.value = true
   try {
-    await $fetch('/api/join', { method: 'POST', body: { name: trimmed } })
+    await $fetch('/api/join', {
+      method: 'POST',
+      body: { phone: phone.value.trim() }
+    })
     await navigateTo('/quiz')
   } catch (e: any) {
     error.value = e?.data?.message ?? 'حدث خطأ، يرجى المحاولة مجدداً'
