@@ -14,34 +14,34 @@
       </div>
 
       <!-- خارج النافذة -->
-      <div
-        v-else-if="state === 'closed'"
-        class="rounded-xl p-10 text-center"
-        style="
-          background: #fff;
-          border: 1px solid rgba(220, 206, 0, 0.4);
-          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-        "
-      >
-        <div class="text-4xl mb-5">🔒</div>
-        <h2 class="text-xl font-bold mb-3" style="color: #1a1a1a">
-          المسابقة غير متاحة حالياً
-        </h2>
-        <div class="text-sm leading-loose" style="color: #6b6b6b">
-          <p>
-            تفتح في:
-            <span class="font-semibold" style="color: #7a7200">{{
-              formatTime(quiz?.openAt)
-            }}</span>
-          </p>
-          <p>
-            تغلق في:
-            <span class="font-semibold" style="color: #7a7200">{{
-              formatTime(quiz?.closeAt)
-            }}</span>
-          </p>
-        </div>
-      </div>
+<!-- خارج النافذة -->
+<div
+  v-else-if="state === 'closed'"
+  class="rounded-xl p-10 text-center"
+  style="
+    background: #fff;
+    border: 1px solid rgba(220, 206, 0, 0.4);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  "
+>
+  <div class="text-4xl mb-5">🔒</div>
+  <h2 class="text-xl font-bold mb-3" style="color: #1a1a1a">
+    المسابقة غير متاحة حالياً
+  </h2>
+  <div class="text-sm leading-loose" style="color: #6b6b6b">
+    <p>
+      تفتح
+      <span class="font-semibold" style="color: #7a7200">{{ openDayLabel }}</span>
+      الساعة
+      <span class="font-semibold" style="color: #7a7200">{{ formatTime(quiz?.openAt) }}</span>
+    </p>
+    <p>
+      تغلق الساعة:
+      <span class="font-semibold" style="color: #7a7200">{{ formatTime(quiz?.closeAt) }}</span>
+    </p>
+  </div>
+</div>
+
 
       <!-- انتهى الوقت -->
       <div
@@ -166,9 +166,8 @@
           <div class="h-px mb-5" style="background: rgba(220, 206, 0, 0.25)" />
 
           <!-- الخيارات -->
-          <div class="flex flex-col gap-2.5 mb-6" style="color: red">
+          <div class="flex flex-col gap-2.5 mb-6">
             <QuizOption
-
               v-for="(opt, i) in quiz.question.options"
               :key="opt.id"
               :option="opt"
@@ -242,6 +241,22 @@ const submitError = ref("");
 const timerExpired = ref(false);
 const quizIsActive = ref(false);
 
+// ── تسمية يوم الفتح ───────────────────────────────────────────────────────────
+// const openDayLabel = computed(() => {
+//   const openAt = quiz.value?.openAt;
+//   if (!openAt) return "";
+
+//   const openDate = new Date(openAt);
+//   const now = new Date();
+//   const tomorrow = new Date(now);
+//   tomorrow.setDate(tomorrow.getDate() + 1);
+
+//   if (openDate.toDateString() === now.toDateString()) return "اليوم";
+//   if (openDate.toDateString() === tomorrow.toDateString()) return "غداً";
+//   return openDate.toLocaleDateString("ar-SA", { weekday: "long" });
+// });
+
+// ── مراقبة حالة النشاط ───────────────────────────────────────────────────────
 watch(
   quizData,
   (d: any) => {
@@ -257,6 +272,7 @@ watch(
   { immediate: true },
 );
 
+// ── حالة الصفحة ──────────────────────────────────────────────────────────────
 type QuizState =
   | "loading"
   | "closed"
@@ -280,6 +296,7 @@ function onTimerExpired() {
   quizIsActive.value = false;
 }
 
+// ── مغادرة الصفحة ────────────────────────────────────────────────────────────
 async function handleVisibility() {
   if (document.visibilityState === "hidden" && quizIsActive.value) {
     quizIsActive.value = false;
@@ -298,6 +315,7 @@ onUnmounted(() =>
   document.removeEventListener("visibilitychange", handleVisibility),
 );
 
+// ── تنسيق الوقت ──────────────────────────────────────────────────────────────
 function formatTime(iso?: string) {
   if (!iso) return "—";
   return new Date(iso).toLocaleTimeString("ar-SA", {
@@ -306,6 +324,7 @@ function formatTime(iso?: string) {
   });
 }
 
+// ── إرسال الإجابة ─────────────────────────────────────────────────────────────
 async function submitAnswer() {
   if (!selectedId.value || timerExpired.value) return;
   submitError.value = "";
@@ -330,7 +349,7 @@ async function submitAnswer() {
         timeout_personal: "انتهى وقتك الشخصي",
         duplicate: "لقد أرسلت إجابتك مسبقاً",
         abandoned: "انتهت فرصتك — غادرت الصفحة أثناء السؤال",
-        needJoin: "يرجى إدخال اسمك أولاً",
+        needJoin: "يرجى إدخال رقمك أولاً",
       };
       submitError.value = msgs[res.reason ?? ""] ?? "حدث خطأ، يرجى المحاولة";
     }
@@ -340,4 +359,20 @@ async function submitAnswer() {
     submitting.value = false;
   }
 }
+
+const openDayLabel = computed(() => {
+  const openAt = quiz.value?.openAt
+  if (!openAt) return ''
+
+  const openDate = new Date(openAt)
+  const now      = new Date()
+  const tomorrow = new Date(now)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
+  if (openDate.toDateString() === now.toDateString())       return 'اليوم'
+  if (openDate.toDateString() === tomorrow.toDateString())  return 'غداً'
+
+  return openDate.toLocaleDateString('ar-SA', { weekday: 'long' })
+})
+
 </script>
