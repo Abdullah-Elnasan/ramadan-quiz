@@ -1,46 +1,75 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center p-6"
-    style="background: linear-gradient(135deg, #1a2540 0%, #243058 50%, #1a2540 100%);">
+  <div
+    class="min-h-screen flex items-center justify-center p-6"
+    style="background: #F5F0E8;"
+  >
     <div class="w-full max-w-md">
-      <div class="rounded-lg overflow-hidden shadow-2xl"
-        style="background: #243058; border: 1px solid rgba(48,80,153,0.4);">
-
-        <div class="h-1" style="background: linear-gradient(to right, transparent, #305099, transparent);" />
+      <div
+        class="rounded-xl overflow-hidden"
+        style="
+          background: #FFFFFF;
+          border: 1px solid rgba(220,206,0,0.5);
+          box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(220,206,0,0.15);
+        "
+      >
+        <!-- شريط علوي ذهبي -->
+        <div class="h-1" style="background: rgb(220,206,0);" />
 
         <div class="p-10 text-center">
-          <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-            style="border: 2px solid rgba(91,127,207,0.4); background: rgba(48,80,153,0.15);">
-            <span class="text-4xl" style="color: #5b7fcf;">✓</span>
+
+          <!-- أيقونة النجاح -->
+          <div
+            class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+            style="
+              border: 2px solid rgba(220,206,0,0.6);
+              background: rgba(220,206,0,0.08);
+            "
+          >
+            <span class="text-4xl" style="color: #7a7200;">✓</span>
           </div>
 
-          <h1 class="text-white text-2xl font-bold tracking-wide mb-2">تم استلام إجابتك</h1>
-          <p class="text-sm mb-8 leading-loose" style="color: rgba(255,255,255,0.45);">
-            شكراً <span class="font-semibold" style="color: #5b7fcf;">{{ name }}</span>،<br>
-            تمت المشاركة في سؤال اليوم بنجاح.<br>
+          <h1 class="text-2xl font-bold tracking-wide mb-2" style="color: #1a1a1a;">
+            تم استلام إجابتك
+          </h1>
+
+          <p class="text-sm mb-8 leading-loose" style="color: #5a5a5a;">
+            شكراً
+            <span class="font-semibold" style="color: #7a7200;">{{ name }}</span>،<br />
+            تمت المشاركة في سؤال اليوم بنجاح.<br />
             ستُعلَن النتائج في نهاية اليوم.
           </p>
 
+          <!-- فاصل ذهبي -->
           <div class="flex items-center gap-3 mb-8">
-            <div class="flex-1 h-px" style="background: rgba(48,80,153,0.3);" />
-            <span class="text-xs" style="color: rgba(91,127,207,0.4);">◆</span>
-            <div class="flex-1 h-px" style="background: rgba(48,80,153,0.3);" />
+            <div class="flex-1 h-px" style="background: rgba(220,206,0,0.4);" />
+            <span style="color: rgba(180,168,0,0.6);">◆</span>
+            <div class="flex-1 h-px" style="background: rgba(220,206,0,0.4);" />
           </div>
 
-          <div class="rounded px-5 py-4 text-right mb-8"
-            style="background: #1a2540; border: 1px solid rgba(48,80,153,0.2);">
-            <p class="text-xs leading-loose" style="color: rgba(255,255,255,0.25);">
+          <!-- تنبيه -->
+          <div
+            class="rounded-lg px-5 py-4 text-right mb-8"
+            style="
+              background: #F9F6EE;
+              border: 1px solid rgba(220,206,0,0.3);
+              border-right: 3px solid rgb(220,206,0);
+            "
+          >
+            <p class="text-xs leading-loose" style="color: #6b6b6b;">
               لا يمكن تعديل الإجابة أو المشاركة مجدداً في نفس اليوم.
             </p>
           </div>
 
+          <!-- الفوتر -->
           <div class="flex items-center justify-center gap-2">
-            <span class="text-xs" style="color: rgba(48,80,153,0.6);">◆</span>
-            <span class="text-xs tracking-widest" style="color: rgba(255,255,255,0.15);">الجوهرة سمارت</span>
-            <span class="text-xs" style="color: rgba(48,80,153,0.6);">◆</span>
+            <span style="color: rgba(180,168,0,0.5); font-size: 10px;">◆</span>
+            <span class="text-xs tracking-widest" style="color: #9a9a9a;">شركة الميثاق</span>
+            <span style="color: rgba(180,168,0,0.5); font-size: 10px;">◆</span>
           </div>
         </div>
 
-        <div class="h-1" style="background: linear-gradient(to right, transparent, #305099, transparent);" />
+        <!-- شريط سفلي ذهبي -->
+        <div class="h-1" style="background: rgb(220,206,0);" />
       </div>
     </div>
   </div>

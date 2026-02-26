@@ -1,50 +1,113 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center p-6"
-    style="background: linear-gradient(135deg, #1a2540 0%, #243058 50%, #1a2540 100%);">
+  <div
+    class="min-h-screen flex items-center justify-center p-6"
+    style="background: #F5F0E8;"
+  >
     <div class="w-full max-w-sm">
 
+      <!-- الرأس -->
       <div class="text-center mb-8">
-        <!-- <div class="w-40 h-40 rounded-full flex items-center justify-center mx-auto mb-3"
-          style="border: 1px solid rgba(91,127,207,0.4); background: white;">
-          <img src="/logo.png" alt="Logo" class="w-full h-full" />
+        <div class="flex justify-center mb-4">
+          <img
+            src="/logo-me2.png"
+            alt="شعار شركة الميثاق"
+            class="w-32 h-32 object-contain"
+            loading="eager"
+          />
         </div>
-        <p class="text-xs tracking-widest uppercase mb-1" style="color: #5b7fcf;">Aljawhra Smart</p> -->
-        <h2 class="text-xl font-bold text-white">تسجيل الدخول</h2>
-        <p class="text-sm mt-1" style="color: rgba(255,255,255,0.35);">أدخل اسمك للمشاركة</p>
+
+        <!-- فاصل ذهبي -->
+        <div class="flex items-center gap-3 mb-5">
+          <div class="flex-1 h-px" style="background: rgba(220,206,0,0.4);" />
+          <span style="color: rgba(180,168,0,0.6);">◆</span>
+          <div class="flex-1 h-px" style="background: rgba(220,206,0,0.4);" />
+        </div>
+
+        <h2 class="text-xl font-bold" style="color: #1a1a1a;">تسجيل الدخول</h2>
+        <p class="text-sm mt-1" style="color: #9a9a9a;">أدخل اسمك للمشاركة</p>
       </div>
 
-      <div class="rounded-lg p-7 shadow-xl"
-        style="background: #243058; border: 1px solid rgba(48,80,153,0.35);">
+      <!-- البطاقة -->
+      <div
+        class="rounded-xl p-7"
+        style="
+          background: #FFFFFF;
+          border: 1px solid rgba(220,206,0,0.45);
+          box-shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(220,206,0,0.1);
+        "
+      >
         <form @submit.prevent="submit">
+
+          <!-- حقل الاسم -->
           <div class="mb-6">
-            <label class="block text-xs tracking-widest uppercase mb-2"
-              style="color: rgba(255,255,255,0.45);">الاسم الكامل</label>
+            <label
+              class="block text-xs tracking-widest uppercase mb-2"
+              style="color: #6b6b6b;"
+            >
+              الاسم الكامل
+            </label>
             <input
               v-model="name"
               type="text"
               placeholder="أدخل اسمك الكريم"
               maxlength="30"
-              class="w-full rounded px-4 py-3 text-white text-right text-sm focus:outline-none transition-all duration-200"
-              style="background: #1a2540; border: 1px solid rgba(48,80,153,0.3);"
+              class="w-full rounded-lg px-4 py-3 text-right text-sm focus:outline-none transition-all duration-200"
+              style="
+                background: #F9F6EE;
+                border: 1px solid rgba(220,206,0,0.35);
+                color: #1a1a1a;
+              "
               :disabled="loading"
-              @focus="e => (e.target as HTMLElement).style.borderColor = 'rgba(91,127,207,0.7)'"
-              @blur="e => (e.target as HTMLElement).style.borderColor = 'rgba(48,80,153,0.3)'"
+              @focus="(e: FocusEvent) => ((e.target as HTMLElement).style.borderColor = 'rgba(180,168,0,0.8)')"
+              @blur="(e: FocusEvent) => ((e.target as HTMLElement).style.borderColor = 'rgba(220,206,0,0.35)')"
             />
-            <p v-if="error" class="text-red-400 text-xs mt-2 text-right">⚠ {{ error }}</p>
+
+            <!-- رسالة الخطأ -->
+            <div
+              v-if="error"
+              class="flex items-center gap-1.5 mt-2 px-3 py-2 rounded-lg"
+              style="background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.2);"
+            >
+              <span style="color: #dc2626; font-size: 11px;">⚠ {{ error }}</span>
+            </div>
           </div>
 
+          <!-- فاصل -->
+          <div class="h-px mb-5" style="background: rgba(220,206,0,0.2);" />
+
+          <!-- زر الدخول -->
           <button
             type="submit"
             :disabled="!name.trim() || loading"
-            class="w-full font-bold py-3.5 rounded transition-all duration-200 tracking-widest text-sm text-white"
-            style="background: #305099;"
-            :style="{ opacity: (!name.trim() || loading) ? '0.4' : '1', cursor: (!name.trim() || loading) ? 'not-allowed' : 'pointer' }"
+            class="w-full font-bold py-3.5 rounded-lg transition-all duration-200 tracking-widest text-sm"
+            style="background: #1a1a1a; color: #F5F0E8;"
+            :style="{
+              opacity: (!name.trim() || loading) ? '0.4' : '1',
+              cursor: (!name.trim() || loading) ? 'not-allowed' : 'pointer'
+            }"
+            @mouseenter="(e: MouseEvent) => {
+              if (name.trim() && !loading) {
+                const el = e.target as HTMLElement
+                el.style.background = 'rgb(220,206,0)'
+                el.style.color = '#1a1a1a'
+              }
+            }"
+            @mouseleave="(e: MouseEvent) => {
+              const el = e.target as HTMLElement
+              el.style.background = '#1a1a1a'
+              el.style.color = '#F5F0E8'
+            }"
           >
             <span v-if="loading">جاري التحقق...</span>
             <span v-else>دخول</span>
           </button>
         </form>
       </div>
+
+      <!-- الفوتر -->
+      <p class="text-center text-xs mt-6 tracking-wider" style="color: #9a9a9a;">
+        © {{ new Date().getFullYear() }} شركة الميثاق — جميع الحقوق محفوظة
+      </p>
     </div>
   </div>
 </template>

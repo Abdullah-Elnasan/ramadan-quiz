@@ -1,3 +1,4 @@
+// server/api/admin/results.delete.ts
 import { defineEventHandler, getQuery } from 'h3'
 import { getStorage, keys } from '../../utils/storage'
 import { todayKey } from '../../utils/time'

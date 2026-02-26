@@ -24,7 +24,7 @@
               class="text-xs tracking-widest"
               style="color: rgba(255, 255, 255, 0.25)"
             >
-              الجوهرة سمارت — {{ today }}
+              شركة الميثاق — {{ today }}
             </p>
           </div>
         </div>

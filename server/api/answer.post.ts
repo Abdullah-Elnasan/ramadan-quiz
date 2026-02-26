@@ -24,45 +24,33 @@ export default defineEventHandler(async (event) => {
 
   const now = nowUtc()
 
-  // 1) فحص النافذة العامة
   if (!isWithinWindow(raw.openAt, raw.closeAt, now)) {
     return { accepted: false, reason: 'timeout_global' }
   }
 
-  // 2) تحقق أن الـ option صحيح
   const validIds = (raw.options as { id: string }[]).map(o => o.id)
   if (!validIds.includes(body.selectedOptionId)) {
     throw createError({ statusCode: 400, message: 'خيار غير صالح' })
   }
 
-  // 3) فحص attempt مسبق
   const attemptKey = keys.attempt(today, userKey)
-  // أضف هذا الفحص بعد فحص الـ attempt المسبق
-  const abandonData = await storage.get(`abandon:${today}:${userKey}`)
-  if (abandonData) {
-    return { accepted: false, reason: 'abandoned' }
-  }
 
+  // فحص abandon
+  const abandonData = await storage.get(`abandon:${today}:${userKey}`)
+  if (abandonData) return { accepted: false, reason: 'abandoned' }
+
+  // فحص تكرار
   const existing = await storage.get(attemptKey)
   if (existing) return { accepted: false, reason: 'duplicate' }
 
-  // 4) فحص 60 ثانية الفردية
+  // فحص 60 ثانية الفردية
   const startData = await storage.get<{ startedAt: number }>(keys.start(today, userKey))
   const isOnTimePersonal = !!startData && secondsElapsed(startData.startedAt, now) <= PERSONAL_LIMIT_SEC
   if (!isOnTimePersonal) {
     return { accepted: false, reason: 'timeout_personal' }
   }
 
-  // 5) حفظ الـ Attempt
-  await storage.set(attemptKey, {
-    userKey,
-    questionId: today,
-    selectedOptionId: body.selectedOptionId,
-    submittedAt: now,
-    isOnTimeGlobal: true,
-    isOnTimePersonal: true
-  })
-  // ✅ أضف هذا بعد حفظ الـ Attempt
+  // حفظ الـ Attempt (مرة واحدة فقط — كان مكرراً في الكود الأصلي)
   await storage.set(attemptKey, {
     userKey,
     questionId: today,
@@ -72,7 +60,7 @@ export default defineEventHandler(async (event) => {
     isOnTimePersonal: true
   })
 
-  // ✅ أضف هذا لتحديث فهرس المشاركين
+  // تحديث الفهرس
   const indexKey = `attempts-index:${today}`
   const index = await storage.get<{ keys: string[] }>(indexKey) ?? { keys: [] }
   if (!index.keys.includes(userKey)) {

@@ -1,3 +1,4 @@
+// server/api/question/today.get.ts
 import { getStorage, keys } from '../../utils/storage'
 import { todayKey, nowUtc, isWithinWindow, secondsElapsed, PERSONAL_LIMIT_SEC } from '../../utils/time'
 

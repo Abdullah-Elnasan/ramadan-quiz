@@ -1,3 +1,4 @@
+// server/api/admin/dates.get.ts
 import { getStorage } from '../../utils/storage'
 
 export default defineEventHandler(async (event) => {

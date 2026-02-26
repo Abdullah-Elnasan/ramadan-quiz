@@ -1,28 +1,29 @@
-import { v4 as uuidv4 } from 'uuid'
+// server/api/join.post.ts
+import { defineEventHandler, readBody, setCookie, createError } from 'h3'
 import { getStorage, keys } from '../utils/storage'
+import { v4 as uuidv4 } from 'uuid'
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody<{ name?: string }>(event)
+  const body = await readBody<{ name: string; uk?: string }>(event)
 
-  if (!body?.name || body.name.trim().length < 2 || body.name.trim().length > 30) {
-    throw createError({ statusCode: 400, message: 'الاسم يجب أن يكون بين 2 و30 حرفاً' })
+  if (!body?.name?.trim()) {
+    throw createError({ statusCode: 400, message: 'الاسم مطلوب' })
   }
 
-  const name = body.name.trim()
-  const storage = getStorage(event)
+  // ✅ إذا لم يُرسل uk، ولّد واحداً جديداً
+  const uk = body.uk || uuidv4()
 
-  // أنشئ userKey جديد إذا لم يوجد Cookie
-  let userKey = getCookie(event, 'userKey')
-  if (!userKey) {
-    userKey = uuidv4()
-    setCookie(event, 'userKey', userKey, {
-      httpOnly: true,
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 90, // 90 يوم
-      path: '/'
-    })
+  const storage = getStorage()
+  const participantKey = keys.participant(uk)
+  const existing = await storage.get<any>(participantKey)
+
+  if (existing) {
+    setCookie(event, 'userKey', uk, { httpOnly: true, path: '/' })
+    return { ok: true, name: existing.name }
   }
 
-  await storage.set(keys.participant(userKey), { name })
-  return { ok: true }
+  await storage.set(participantKey, { name: body.name.trim() })
+  setCookie(event, 'userKey', uk, { httpOnly: true, path: '/' })
+
+  return { ok: true, name: body.name.trim() }
 })

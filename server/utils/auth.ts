@@ -1,3 +1,5 @@
+
+// server/utils/auth.ts
 import { H3Event, createError } from 'h3'
 
 export function checkAdminAuth(event: H3Event): void {

@@ -1,10 +1,4 @@
 // server/utils/redis.ts
-import Redis from 'ioredis'
+import { Redis } from '@upstash/redis'
 
-const url = process.env.REDIS_URL
-
-if (!url) {
-  throw new Error('REDIS_URL environment variable is not set')
-}
-
-export const redis = new Redis(url)
+export const redis = Redis.fromEnv()
